@@ -2,6 +2,8 @@
 
 systray is a cross-platform Go library to place an icon and menu in the notification area.
 
+### **This is a fork of [getlantern/systray](https://github.com/getlantern/systray) with no improvements made over upstream. This fork only contains a modification in `systray_darwin.m` to get around a linking issue in macOS during Wails build. Please use [getlantern/systray](https://github.com/getlantern/systray) in your project instead.**
+
 ## Features
 
 * Supported on Windows, macOS, and Linux
