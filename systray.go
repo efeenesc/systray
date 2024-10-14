@@ -111,6 +111,12 @@ func Quit() {
 	quitOnce.Do(quit)
 }
 
+// AddIconClickAction triggers the passed callback when the icon is clicked.
+// This is only supported on Windows.
+func AddIconClickAction(callback func()) {
+	assignIconClickCallback(callback)
+}
+
 // AddMenuItem adds a menu item with the designated title and tooltip.
 // It can be safely invoked from different goroutines.
 // Created menu items are checkable on Windows and OSX by default. For Linux you have to use AddMenuItemCheckbox

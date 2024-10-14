@@ -42,3 +42,7 @@ func (item *MenuItem) SetTemplateIcon(templateIconBytes []byte, regularIconBytes
 func SetRemovalAllowed(allowed bool) {
 	C.setRemovalAllowed((C.bool)(allowed))
 }
+
+// Windows-only feature
+func assignIconClickCallback(callback func()) {
+}

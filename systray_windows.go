@@ -1,3 +1,4 @@
+//go:build windows
 // +build windows
 
 package systray
@@ -61,6 +62,10 @@ var (
 	pTranslateMessage      = u32.NewProc("TranslateMessage")
 	pUnregisterClass       = u32.NewProc("UnregisterClassW")
 	pUpdateWindow          = u32.NewProc("UpdateWindow")
+)
+
+var (
+	iconClickCallback func()
 )
 
 // Contains window class information.
@@ -277,8 +282,10 @@ func (t *winTray) wndProc(hWnd windows.Handle, message uint32, wParam, lParam ui
 		systrayExit()
 	case t.wmSystrayMessage:
 		switch lParam {
-		case WM_RBUTTONUP, WM_LBUTTONUP:
+		case WM_RBUTTONUP:
 			t.showMenu()
+		case WM_LBUTTONUP:
+			t.runIconClickCallback()
 		}
 	case t.wmTaskbarCreated: // on explorer.exe restarts
 		t.muNID.Lock()
@@ -665,6 +672,13 @@ func (t *winTray) showMenu() error {
 	return nil
 }
 
+// Windows-only function that runs a user-provided callback if it exists
+func (t *winTray) runIconClickCallback() {
+	if iconClickCallback != nil {
+		iconClickCallback()
+	}
+}
+
 func (t *winTray) delFromVisibleItems(parent, val uint32) {
 	t.muVisibleItems.Lock()
 	defer t.muVisibleItems.Unlock()
@@ -910,6 +924,10 @@ func SetTooltip(tooltip string) {
 // SetRemovalAllowed sets whether a user can remove the systray icon or not.
 // This is only supported on macOS.
 func SetRemovalAllowed(allowed bool) {
+}
+
+func assignIconClickCallback(callback func()) {
+	iconClickCallback = callback
 }
 
 func addOrUpdateMenuItem(item *MenuItem) {
