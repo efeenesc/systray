@@ -24,3 +24,7 @@ func (item *MenuItem) SetIcon(iconBytes []byte) {
 // .ico/.jpg/.png for other platforms.
 func (item *MenuItem) SetTemplateIcon(templateIconBytes []byte, regularIconBytes []byte) {
 }
+
+// Windows-only feature
+func assignIconClickCallback(callback func()) {
+}
